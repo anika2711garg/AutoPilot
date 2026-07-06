@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function LandingPage() {
   return (
     <div className="min-h-screen bg-black text-white selection:bg-indigo-500/30">
@@ -5,17 +7,17 @@ export default function LandingPage() {
       
       <header className="fixed top-0 w-full border-b border-white/10 bg-black/50 backdrop-blur-md z-50">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <div className="font-bold text-xl tracking-tighter">Autopilot</div>
+          <Link href="/" className="font-bold text-xl tracking-tighter">Autopilot</Link>
           <nav className="hidden md:flex gap-6 text-sm font-medium text-white/70">
             <a href="#features" className="hover:text-white transition">Features</a>
             <a href="#how-it-works" className="hover:text-white transition">How it Works</a>
             <a href="#pricing" className="hover:text-white transition">Pricing</a>
           </nav>
           <div className="flex gap-4">
-            <a href="/login" className="text-sm font-medium hover:text-white/80 px-4 py-2">Sign in</a>
-            <a href="/plan" className="bg-white text-black text-sm font-medium px-4 py-2 rounded-full hover:bg-white/90 transition">
+            <Link href="/sign-in" className="text-sm font-medium hover:text-white/80 px-4 py-2">Sign in</Link>
+            <Link href="/sign-up" className="bg-white text-black text-sm font-medium px-4 py-2 rounded-full hover:bg-white/90 transition">
               Get Started
-            </a>
+            </Link>
           </div>
         </div>
       </header>
@@ -38,9 +40,9 @@ export default function LandingPage() {
         </p>
         
         <div className="flex flex-col sm:flex-row gap-4 w-full justify-center max-w-md">
-          <a href="/plan" className="w-full bg-white text-black h-12 rounded-xl flex items-center justify-center font-medium hover:bg-white/90 transition shadow-[0_0_40px_rgba(255,255,255,0.3)]">
-            Start Planning
-          </a>
+          <Link href="/sign-up" className="w-full bg-white text-black h-12 rounded-xl flex items-center justify-center font-medium hover:bg-white/90 transition shadow-[0_0_40px_rgba(255,255,255,0.3)]">
+            Start Planning for Free
+          </Link>
         </div>
         
         {/* Globe Placeholder */}
