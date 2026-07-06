@@ -218,32 +218,6 @@ export default function LandingPage() {
           </div>
         </section>
 
-        <section id="api" className="mt-24 rounded-[2rem] border border-white/10 bg-linear-to-r from-white/6 via-white/5 to-indigo-500/10 p-8 shadow-2xl shadow-black/20 backdrop-blur-xl">
-          <div className="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
-            <div>
-              <p className="text-sm font-medium uppercase tracking-[0.24em] text-white/45">API</p>
-              <h2 className="mt-3 text-3xl font-semibold tracking-tight">A backend that reads like a product, not a stub</h2>
-              <p className="mt-4 max-w-2xl leading-7 text-white/60">
-                The service now exposes a clearer status and version surface, which makes local development and future integrations easier to reason about.
-              </p>
-            </div>
-
-            <div className="grid gap-3 rounded-3xl border border-white/10 bg-black/25 p-5 text-sm text-white/70">
-              <div className="flex items-center gap-2">
-                <BadgeCheck className="h-4 w-4 text-emerald-300" />
-                <span>/health</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <BadgeCheck className="h-4 w-4 text-emerald-300" />
-                <span>/api/v1</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <BadgeCheck className="h-4 w-4 text-emerald-300" />
-                <span>/api/v1/status</span>
-              </div>
-            </div>
-          </div>
-        </section>
       </main>
     </div>
   )
