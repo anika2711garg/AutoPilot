@@ -18,6 +18,20 @@ class TripResponse(BaseModel):
     summary: str
 
 
+class TripCreateResponse(BaseModel):
+    assistant_message: str
+    trip: TripResponse
+    next_steps: list[str]
+    recommendations: list[str]
+
+
+class TripSummary(BaseModel):
+    active_trips: int
+    planning_ready: bool
+    favorite_destinations: list[str]
+    quick_tips: list[str]
+
+
 MOCK_TRIPS: List[TripResponse] = [
     TripResponse(
         id=1,
@@ -54,7 +68,21 @@ async def get_trip(trip_id: int):
     raise HTTPException(status_code=404, detail="Trip not found")
 
 
-@router.post("/")
+@router.get("/summary", response_model=TripSummary)
+async def get_trip_summary():
+    return TripSummary(
+        active_trips=len(MOCK_TRIPS),
+        planning_ready=True,
+        favorite_destinations=["Goa", "Tokyo", "Bali"],
+        quick_tips=[
+            "Include dates and budget for sharper recommendations.",
+            "Mention trip style like beach, city, or adventure.",
+            "Add must-have preferences such as hotel class or flight time.",
+        ],
+    )
+
+
+@router.post("/", response_model=TripCreateResponse)
 async def create_trip(request: TripCreateRequest):
     next_id = max(trip.id for trip in MOCK_TRIPS) + 1 if MOCK_TRIPS else 1
     prompt = request.prompt.strip()
@@ -77,7 +105,16 @@ async def create_trip(request: TripCreateRequest):
     )
     MOCK_TRIPS.insert(0, trip)
 
-    return {
-        "assistant_message": "I received your trip request and created a draft itinerary in the backend.",
-        "trip": trip,
-    }
+    return TripCreateResponse(
+        assistant_message="I received your trip request and created a draft itinerary in the backend.",
+        trip=trip,
+        next_steps=[
+            "Review the generated trip card.",
+            "Open the trip detail page for itinerary context.",
+            "Refine the prompt with dates or budget if needed.",
+        ],
+        recommendations=[
+            "Add a destination to get a more accurate mock draft.",
+            "Specify whether you want the trip to feel relaxed or packed.",
+        ],
+    )

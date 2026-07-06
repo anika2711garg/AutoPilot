@@ -1,8 +1,8 @@
 "use client"
 import Link from "next/link"
 import { useEffect, useState } from "react"
-import { ArrowRight, Send, Map, Calendar, Wallet } from "lucide-react"
-import { createTrip, getApiBaseUrl, getTrips, type Trip } from "@/lib/api"
+import { ArrowRight, Lightbulb, Send, Sparkles, Map, Calendar, Wallet } from "lucide-react"
+import { createTrip, getApiBaseUrl, getTripSummary, getTrips, type Trip, type TripSummary } from "@/lib/api"
 
 type Message = {
   role: "assistant" | "user"
@@ -18,16 +18,24 @@ export default function PlanPage() {
   ])
   const [input, setInput] = useState("")
   const [trips, setTrips] = useState<Trip[]>([])
+  const [summary, setSummary] = useState<TripSummary | null>(null)
   const [isLoadingTrips, setIsLoadingTrips] = useState(true)
+  const [isLoadingSummary, setIsLoadingSummary] = useState(true)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     setIsLoadingTrips(true)
+    setIsLoadingSummary(true)
     getTrips()
       .then(setTrips)
       .catch(() => setError("Could not load trips from the backend right now."))
       .finally(() => setIsLoadingTrips(false))
+
+    getTripSummary()
+      .then(setSummary)
+      .catch(() => null)
+      .finally(() => setIsLoadingSummary(false))
   }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -47,6 +55,13 @@ export default function PlanPage() {
         { role: "assistant", content: result.assistant_message },
       ])
       setTrips((currentTrips) => [result.trip, ...currentTrips])
+
+      if (result.next_steps.length > 0) {
+        setMessages((currentMessages) => [
+          ...currentMessages,
+          { role: "assistant", content: `Next step: ${result.next_steps[0]}` },
+        ])
+      }
     } catch {
       setMessages((currentMessages) => [
         ...currentMessages,
@@ -90,8 +105,49 @@ export default function PlanPage() {
             <p className="mt-2 text-2xl font-semibold">{isSubmitting ? "Thinking" : "Ready"}</p>
           </div>
         </div>
+
+        <div className="mt-5 grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
+          <div className="rounded-2xl border border-white/10 bg-black/20 p-4">
+            <div className="flex items-center gap-2 text-sm font-medium text-white/80">
+              <Sparkles className="h-4 w-4 text-cyan-300" />
+              Suggested prompts
+            </div>
+            <div className="mt-3 flex flex-wrap gap-2">
+              {[
+                "5 day beach trip to Goa in December",
+                "Tokyo city break under $2500",
+                "Family weekend in Bali with hotel options",
+              ].map((prompt) => (
+                <button
+                  key={prompt}
+                  type="button"
+                  onClick={() => setInput(prompt)}
+                  className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-left text-sm text-white/70 transition hover:bg-white/10"
+                >
+                  {prompt}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="rounded-2xl border border-white/10 bg-black/20 p-4">
+            <div className="flex items-center gap-2 text-sm font-medium text-white/80">
+              <Lightbulb className="h-4 w-4 text-yellow-300" />
+              Quick tips
+            </div>
+            <div className="mt-3 space-y-2 text-sm text-white/65">
+              {isLoadingSummary ? (
+                <p>Loading trip guidance...</p>
+              ) : summary ? (
+                summary.quick_tips.map((tip) => <p key={tip}>• {tip}</p>)
+              ) : (
+                <p>Include destination, dates, budget, and trip style for a sharper mock plan.</p>
+              )}
+            </div>
+          </div>
+        </div>
       </div>
-      
+
       {/* Header Tags */}
       <div className="flex gap-2 mb-8 overflow-x-auto pb-2">
         <div className="bg-secondary/50 border border-border px-3 py-1.5 rounded-full text-xs font-medium flex items-center gap-1.5 whitespace-nowrap">
@@ -126,7 +182,9 @@ export default function PlanPage() {
             <h2 className="text-sm font-semibold tracking-tight">Backend trips</h2>
             <p className="text-xs text-muted-foreground">Your mock backend catalog and newly created trips live here.</p>
           </div>
-          <span className="text-xs text-muted-foreground">{trips.length} trips</span>
+          <span className="text-xs text-muted-foreground">
+            {summary ? `${summary.active_trips} active trips` : `${trips.length} trips`}
+          </span>
         </div>
 
         {isLoadingTrips ? (
@@ -164,7 +222,7 @@ export default function PlanPage() {
           </div>
         ) : (
           <div className="rounded-xl border border-dashed border-border/60 bg-background/40 p-6 text-sm text-muted-foreground">
-            No trips yet. Send a prompt above to create your first backend-backed plan.
+            No trips yet. Use one of the suggestions above to create your first backend-backed plan.
           </div>
         )}
       </div>

@@ -10,6 +10,20 @@ export type Trip = {
   summary: string;
 };
 
+export type TripSummary = {
+  active_trips: number;
+  planning_ready: boolean;
+  favorite_destinations: string[];
+  quick_tips: string[];
+};
+
+export type TripCreateResponse = {
+  assistant_message: string;
+  trip: Trip;
+  next_steps: string[];
+  recommendations: string[];
+};
+
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const response = await fetch(`${API_BASE_URL}/api/v1${path}`, {
     ...init,
@@ -35,12 +49,16 @@ export async function getTrips() {
   return request<Trip[]>("/trips");
 }
 
+export async function getTripSummary() {
+  return request<TripSummary>("/trips/summary");
+}
+
 export async function getTrip(tripId: string) {
   return request<Trip>(`/trips/${tripId}`);
 }
 
 export async function createTrip(prompt: string) {
-  return request<{ assistant_message: string; trip: Trip }>("/trips", {
+  return request<TripCreateResponse>("/trips", {
     method: "POST",
     body: JSON.stringify({ prompt }),
   });
