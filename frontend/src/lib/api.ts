@@ -1,6 +1,6 @@
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8001";
 
-type Trip = {
+export type Trip = {
   id: number;
   title: string;
   destination: string;

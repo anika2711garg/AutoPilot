@@ -1,8 +1,16 @@
+import Link from "next/link"
+import { notFound } from "next/navigation"
 import { MapPin, CalendarDays, Wallet, CloudSun, Phone, PenTool } from "lucide-react"
 import { getTrip } from "@/lib/api"
 
 export default async function TripDetailsPage({ params }: { params: { id: string } }) {
-  const trip = await getTrip(params.id)
+  let trip
+
+  try {
+    trip = await getTrip(params.id)
+  } catch {
+    notFound()
+  }
 
   return (
     <div className="flex h-full w-full">
@@ -11,8 +19,19 @@ export default async function TripDetailsPage({ params }: { params: { id: string
         
         {/* Header */}
         <div>
+          <div className="flex items-center justify-between gap-4 mb-4">
+            <Link href="/plan" className="text-sm font-medium text-indigo-300 transition hover:text-indigo-200">
+              Back to planner
+            </Link>
+            <span className="rounded-full bg-indigo-500/10 px-3 py-1 text-xs font-medium text-indigo-300">
+              {trip.status}
+            </span>
+          </div>
+
           <h1 className="text-4xl font-bold tracking-tight mb-4">{trip.title}</h1>
-          <div className="flex gap-4 text-muted-foreground font-medium text-sm">
+          <p className="max-w-2xl text-base leading-7 text-muted-foreground">{trip.summary}</p>
+
+          <div className="mt-4 flex gap-4 text-muted-foreground font-medium text-sm flex-wrap">
             <span className="flex items-center gap-1.5 bg-secondary/50 px-3 py-1 rounded-full"><MapPin className="w-4 h-4"/> {trip.destination}</span>
             <span className="flex items-center gap-1.5 bg-secondary/50 px-3 py-1 rounded-full"><CalendarDays className="w-4 h-4"/> {trip.dates}</span>
             <span className="flex items-center gap-1.5 bg-secondary/50 px-3 py-1 rounded-full"><Wallet className="w-4 h-4"/> {trip.budget}</span>
