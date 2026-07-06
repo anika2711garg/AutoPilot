@@ -1,30 +1,67 @@
 "use client"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Send, Map, Calendar, Wallet } from "lucide-react"
+import { createTrip, getTrips } from "@/lib/api"
+
+type Message = {
+  role: "assistant" | "user"
+  content: string
+}
+
+type Trip = {
+  id: number
+  title: string
+  destination: string
+  dates: string
+  budget: string
+  status: string
+  summary: string
+}
 
 export default function PlanPage() {
-  const [messages, setMessages] = useState([
+  const [messages, setMessages] = useState<Message[]>([
     {
       role: "assistant",
       content: "Hi! I'm your Autopilot AI. Where would you like to go, and what's your budget?"
     }
   ])
   const [input, setInput] = useState("")
+  const [trips, setTrips] = useState<Trip[]>([])
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  useEffect(() => {
+    getTrips()
+      .then(setTrips)
+      .catch(() => setError("Could not load trips from the backend right now."))
+  }, [])
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!input.trim()) return
-    
-    setMessages([...messages, { role: "user", content: input }])
+
+    const prompt = input.trim()
+    setMessages((currentMessages) => [...currentMessages, { role: "user", content: prompt }])
     setInput("")
-    
-    // Placeholder for actual API call that would trigger LangGraph streaming
-    setTimeout(() => {
-      setMessages(prev => [...prev, { 
-        role: "assistant", 
-        content: "I'm analyzing your request. I'll search for flights, hotels, and create an itinerary for you." 
-      }])
-    }, 1000)
+    setIsSubmitting(true)
+    setError(null)
+
+    try {
+      const result = await createTrip(prompt)
+      setMessages((currentMessages) => [
+        ...currentMessages,
+        { role: "assistant", content: result.assistant_message },
+      ])
+      setTrips((currentTrips) => [result.trip, ...currentTrips])
+    } catch {
+      setMessages((currentMessages) => [
+        ...currentMessages,
+        { role: "assistant", content: "I could not reach the backend just now. Try again in a moment." },
+      ])
+      setError("Backend request failed. Make sure the FastAPI server is running on port 8000.")
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -58,6 +95,35 @@ export default function PlanPage() {
         ))}
       </div>
 
+      {trips.length > 0 && (
+        <div className="mb-6 rounded-2xl border border-border/50 bg-secondary/20 p-4">
+          <div className="flex items-center justify-between gap-4 mb-4">
+            <h2 className="text-sm font-semibold tracking-tight">Backend trips</h2>
+            <span className="text-xs text-muted-foreground">Connected to {process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000"}</span>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2">
+            {trips.slice(0, 4).map((trip) => (
+              <div key={trip.id} className="rounded-xl border border-border/50 bg-background/60 p-3">
+                <div className="flex items-center justify-between gap-3">
+                  <div>
+                    <p className="font-medium">{trip.title}</p>
+                    <p className="text-xs text-muted-foreground">{trip.destination}</p>
+                  </div>
+                  <span className="rounded-full bg-indigo-500/10 px-2 py-1 text-xs text-indigo-300">{trip.status}</span>
+                </div>
+                <p className="mt-2 text-xs leading-6 text-muted-foreground">{trip.summary}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {error && (
+        <div className="mb-4 rounded-xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-200">
+          {error}
+        </div>
+      )}
+
       {/* Input Area */}
       <div className="sticky bottom-6 left-0 right-0 bg-background/80 backdrop-blur-xl pb-6 pt-2">
         <form onSubmit={handleSubmit} className="relative">
@@ -70,7 +136,7 @@ export default function PlanPage() {
           />
           <button 
             type="submit"
-            disabled={!input.trim()}
+            disabled={!input.trim() || isSubmitting}
             className="absolute right-2 top-2 bottom-2 aspect-square bg-indigo-500 text-white rounded-xl flex items-center justify-center hover:bg-indigo-600 disabled:opacity-50 disabled:hover:bg-indigo-500 transition-all"
           >
             <Send className="w-4 h-4" />

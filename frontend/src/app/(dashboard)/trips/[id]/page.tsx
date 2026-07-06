@@ -1,6 +1,9 @@
 import { MapPin, CalendarDays, Wallet, CloudSun, Phone, PenTool } from "lucide-react"
+import { getTrip } from "@/lib/api"
 
-export default function TripDetailsPage({ params }: { params: { id: string } }) {
+export default async function TripDetailsPage({ params }: { params: { id: string } }) {
+  const trip = await getTrip(params.id)
+
   return (
     <div className="flex h-full w-full">
       {/* Left Content Area */}
@@ -8,11 +11,11 @@ export default function TripDetailsPage({ params }: { params: { id: string } }) 
         
         {/* Header */}
         <div>
-          <h1 className="text-4xl font-bold tracking-tight mb-4">Goa Getaway</h1>
+          <h1 className="text-4xl font-bold tracking-tight mb-4">{trip.title}</h1>
           <div className="flex gap-4 text-muted-foreground font-medium text-sm">
-            <span className="flex items-center gap-1.5 bg-secondary/50 px-3 py-1 rounded-full"><MapPin className="w-4 h-4"/> Goa, India</span>
-            <span className="flex items-center gap-1.5 bg-secondary/50 px-3 py-1 rounded-full"><CalendarDays className="w-4 h-4"/> Dec 15 - Dec 20</span>
-            <span className="flex items-center gap-1.5 bg-secondary/50 px-3 py-1 rounded-full"><Wallet className="w-4 h-4"/> ₹38,500</span>
+            <span className="flex items-center gap-1.5 bg-secondary/50 px-3 py-1 rounded-full"><MapPin className="w-4 h-4"/> {trip.destination}</span>
+            <span className="flex items-center gap-1.5 bg-secondary/50 px-3 py-1 rounded-full"><CalendarDays className="w-4 h-4"/> {trip.dates}</span>
+            <span className="flex items-center gap-1.5 bg-secondary/50 px-3 py-1 rounded-full"><Wallet className="w-4 h-4"/> {trip.budget}</span>
           </div>
         </div>
 
@@ -24,7 +27,7 @@ export default function TripDetailsPage({ params }: { params: { id: string } }) 
             {/* Day 1 */}
             <div className="bg-secondary/20 border border-border/50 rounded-2xl p-6">
               <h3 className="font-bold text-lg mb-4 text-indigo-400">Day 1: Arrival & North Goa</h3>
-              <div className="space-y-6 relative before:absolute before:inset-0 before:ml-[11px] before:-translate-x-px before:h-full before:w-0.5 before:bg-border/50">
+              <div className="space-y-6 relative before:absolute before:inset-0 before:ml-2.75 before:-translate-x-px before:h-full before:w-0.5 before:bg-border/50">
                 
                 {/* Flight Event */}
                 <div className="relative flex items-start gap-4">
@@ -51,7 +54,7 @@ export default function TripDetailsPage({ params }: { params: { id: string } }) 
           {/* Widgets Column */}
           <div className="col-span-1 space-y-6">
             {/* Weather Widget */}
-            <div className="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl p-6 text-white shadow-xl">
+            <div className="bg-linear-to-br from-indigo-500 to-purple-600 rounded-2xl p-6 text-white shadow-xl">
               <div className="flex justify-between items-start mb-4">
                 <CloudSun className="w-8 h-8 opacity-80" />
                 <span className="text-2xl font-bold">28°C</span>
