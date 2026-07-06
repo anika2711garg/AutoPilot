@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
-from app.api.api import api_router
+from app.api.endpoints.trips import MOCK_TRIPS, TripCreateRequest, TripResponse
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -24,7 +24,71 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(api_router, prefix="/api/v1")
+
+@app.get("/api/v1")
+async def api_root():
+    return {
+        "service": settings.PROJECT_NAME,
+        "version": "1.0.0",
+        "docs": "/docs",
+        "endpoints": {
+            "trips": "/api/v1/trips",
+            "status": "/api/v1/status",
+        },
+    }
+
+
+@app.get("/api/v1/status")
+async def api_status():
+    return {
+        "service": settings.PROJECT_NAME,
+        "status": "healthy",
+        "version": "1.0.0",
+        "environment": "development",
+    }
+
+
+@app.get("/api/v1/trips", response_model=list[TripResponse])
+async def get_trips():
+    return MOCK_TRIPS
+
+
+@app.get("/api/v1/trips/{trip_id}", response_model=TripResponse)
+async def get_trip(trip_id: int):
+    for trip in MOCK_TRIPS:
+        if trip.id == trip_id:
+            return trip
+
+    return MOCK_TRIPS[0]
+
+
+@app.post("/api/v1/trips")
+async def create_trip(request: TripCreateRequest):
+    next_id = max(trip.id for trip in MOCK_TRIPS) + 1 if MOCK_TRIPS else 1
+    prompt = request.prompt.strip()
+
+    title = prompt[:1].upper() + prompt[1:40].strip() if prompt else "New Trip"
+    destination = "Custom trip"
+    if "goa" in prompt.lower():
+        destination = "Goa, India"
+    elif "tokyo" in prompt.lower():
+        destination = "Tokyo, Japan"
+
+    trip = TripResponse(
+        id=next_id,
+        title=title or "New Trip",
+        destination=destination,
+        dates="Dates pending",
+        budget="Budget pending",
+        status="Planning",
+        summary=f"Autopilot received your request: {prompt}",
+    )
+    MOCK_TRIPS.insert(0, trip)
+
+    return {
+        "assistant_message": "I received your trip request and created a draft itinerary in the backend.",
+        "trip": trip,
+    }
 
 @app.get("/")
 async def root():
@@ -34,7 +98,9 @@ async def root():
         "version": "1.0.0",
         "docs": "/docs",
         "health": "/health",
+        "api": "/api/v1",
     }
+
 
 @app.get("/health")
 async def health_check():
