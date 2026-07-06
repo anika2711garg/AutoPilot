@@ -1,54 +1,249 @@
 import Link from "next/link";
+import { ArrowRight, BadgeCheck, CalendarDays, Globe, Landmark, ShieldCheck, Sparkles, Star, TrendingUp, Users } from "lucide-react";
+
+const stats = [
+  { value: "24h", label: "Average itinerary turnaround" },
+  { value: "18k", label: "Trips planned with the copilot" },
+  { value: "94%", label: "Users who kept the first draft" },
+];
+
+const features = [
+  {
+    icon: Globe,
+    title: "Search everything together",
+    description:
+      "Flights, stays, transit, and activities are compared in one flow instead of scattered across tabs.",
+  },
+  {
+    icon: Sparkles,
+    title: "Clear next actions",
+    description:
+      "Each trip gets a clean plan with budgets, timing, and decisions surfaced up front.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Built for trust",
+    description:
+      "Important choices stay visible, so travelers can verify details before booking.",
+  },
+];
+
+const steps = [
+  {
+    number: "01",
+    title: "Tell Autopilot where you want to go",
+    description: "Describe your destination, dates, and budget in plain language.",
+  },
+  {
+    number: "02",
+    title: "Let the agents work in parallel",
+    description: "The system scouts flights, stays, and timing while the budget gets optimized.",
+  },
+  {
+    number: "03",
+    title: "Refine and book with confidence",
+    description: "Review a focused itinerary instead of a pile of raw search results.",
+  },
+];
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-black text-white selection:bg-indigo-500/30">
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-900/20 via-black to-black -z-10" />
-      
-      <header className="fixed top-0 w-full border-b border-white/10 bg-black/50 backdrop-blur-md z-50">
-        <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <Link href="/" className="font-bold text-xl tracking-tighter">Autopilot</Link>
-          <nav className="hidden md:flex gap-6 text-sm font-medium text-white/70">
-            <a href="#features" className="hover:text-white transition">Features</a>
-            <a href="#how-it-works" className="hover:text-white transition">How it Works</a>
-            <a href="#pricing" className="hover:text-white transition">Pricing</a>
+    <div className="min-h-screen overflow-hidden bg-[#050816] text-white selection:bg-indigo-500/30">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(99,102,241,0.24),transparent_34%),radial-gradient(circle_at_bottom_right,rgba(34,211,238,0.16),transparent_28%),linear-gradient(to_bottom,rgba(5,8,22,0.5),rgba(5,8,22,0.95))]" />
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-size-[72px_72px] opacity-25" />
+
+      <header className="sticky top-0 z-50 border-b border-white/8 bg-[#050816]/75 backdrop-blur-xl">
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+          <Link href="/" className="flex items-center gap-3 font-semibold tracking-tight">
+            <div className="flex h-9 w-9 items-center justify-center rounded-2xl border border-white/10 bg-white/6 shadow-lg shadow-indigo-500/10">
+              <Landmark className="h-4 w-4 text-indigo-300" />
+            </div>
+            <span className="text-lg">Autopilot</span>
+          </Link>
+
+          <nav className="hidden items-center gap-8 text-sm text-white/65 md:flex">
+            <a href="#features" className="transition hover:text-white">Features</a>
+            <a href="#workflow" className="transition hover:text-white">Workflow</a>
+            <a href="#api" className="transition hover:text-white">API</a>
           </nav>
-          <div className="flex gap-4">
-            <Link href="/sign-in" className="text-sm font-medium hover:text-white/80 px-4 py-2">Sign in</Link>
-            <Link href="/sign-up" className="bg-white text-black text-sm font-medium px-4 py-2 rounded-full hover:bg-white/90 transition">
-              Get Started
+
+          <div className="flex items-center gap-2 sm:gap-3">
+            <Link href="/sign-in" className="rounded-full px-4 py-2 text-sm text-white/70 transition hover:bg-white/5 hover:text-white">
+              Sign in
+            </Link>
+            <Link href="/sign-up" className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-medium text-black transition hover:bg-white/90">
+              Start free
+              <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
         </div>
       </header>
 
-      <main className="pt-32 pb-16 container mx-auto px-4 flex flex-col items-center text-center">
-        <div className="inline-flex items-center rounded-full border border-white/10 bg-white/5 px-3 py-1 text-sm font-medium text-indigo-300 mb-8">
-          <span className="flex h-2 w-2 rounded-full bg-indigo-500 mr-2 animate-pulse"></span>
-          Autopilot Beta is now live
-        </div>
-        
-        <h1 className="text-5xl md:text-7xl font-bold tracking-tighter max-w-4xl leading-[1.1] mb-6">
-          Plan, optimize, and book trips <br className="hidden md:block"/>
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-cyan-400">
-            with an AI Copilot.
-          </span>
-        </h1>
-        
-        <p className="text-lg md:text-xl text-white/60 max-w-2xl mb-10">
-          Autopilot uses a multi-agent AI architecture to search flights, find hotels, build itineraries, and manage your budget—all through a simple natural language interface.
-        </p>
-        
-        <div className="flex flex-col sm:flex-row gap-4 w-full justify-center max-w-md">
-          <Link href="/sign-up" className="w-full bg-white text-black h-12 rounded-xl flex items-center justify-center font-medium hover:bg-white/90 transition shadow-[0_0_40px_rgba(255,255,255,0.3)]">
-            Start Planning for Free
-          </Link>
-        </div>
-        
-        {/* Globe Placeholder */}
-        <div className="mt-20 w-full max-w-5xl aspect-video rounded-2xl border border-white/10 bg-white/5 relative overflow-hidden backdrop-blur-sm flex items-center justify-center">
-            <div className="text-white/40 font-mono text-sm">[Interactive Globe Animation Here]</div>
-        </div>
+      <main className="relative mx-auto max-w-7xl px-4 pb-24 pt-16 sm:px-6 lg:px-8 lg:pt-20">
+        <section className="grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr]">
+          <div className="max-w-3xl">
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-sm text-indigo-200 shadow-lg shadow-indigo-500/10 backdrop-blur">
+              <span className="h-2 w-2 rounded-full bg-emerald-400" />
+              Multi-agent travel planning, live in beta
+            </div>
+
+            <h1 className="mt-6 text-5xl font-semibold tracking-tight text-balance sm:text-6xl lg:text-7xl">
+              Plan, compare, and book trips with a calmer interface.
+            </h1>
+
+            <p className="mt-6 max-w-2xl text-lg leading-8 text-white/66 sm:text-xl">
+              Autopilot turns a messy travel search into a focused plan. Flights, stays, budget, and itinerary decisions come together in one place so travelers can move faster and decide with confidence.
+            </p>
+
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <Link href="/sign-up" className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-white px-6 font-medium text-black transition hover:bg-white/90">
+                Start planning for free
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+              <Link href="/plan" className="inline-flex h-12 items-center justify-center gap-2 rounded-full border border-white/10 bg-white/5 px-6 font-medium text-white transition hover:bg-white/10">
+                See the planner
+              </Link>
+            </div>
+
+            <div className="mt-10 grid gap-4 sm:grid-cols-3">
+              {stats.map((stat) => (
+                <div key={stat.label} className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur">
+                  <div className="text-2xl font-semibold tracking-tight">{stat.value}</div>
+                  <div className="mt-1 text-sm leading-6 text-white/55">{stat.label}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="relative">
+            <div className="absolute -inset-6 rounded-[2rem] bg-indigo-500/10 blur-3xl" />
+            <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-[#0c1122]/85 p-6 shadow-2xl shadow-black/30 backdrop-blur-xl">
+              <div className="flex items-center justify-between text-sm text-white/55">
+                <span>Trip control center</span>
+                <span className="inline-flex items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1 text-emerald-200">
+                  <BadgeCheck className="h-3.5 w-3.5" />
+                  Ready
+                </span>
+              </div>
+
+              <div className="mt-6 rounded-3xl border border-white/10 bg-white/5 p-5">
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <p className="text-sm text-white/55">Next recommended trip</p>
+                    <h2 className="mt-1 text-2xl font-semibold tracking-tight">Goa Escape</h2>
+                  </div>
+                  <div className="rounded-2xl bg-indigo-400/15 px-3 py-2 text-right">
+                    <p className="text-xs uppercase tracking-[0.2em] text-indigo-200/70">Budget</p>
+                    <p className="text-lg font-semibold text-white">₹38,500</p>
+                  </div>
+                </div>
+
+                <div className="mt-5 space-y-3">
+                  <div className="flex items-center justify-between rounded-2xl border border-white/8 bg-black/20 px-4 py-3">
+                    <div className="flex items-center gap-3">
+                      <CalendarDays className="h-4 w-4 text-indigo-300" />
+                      <span className="text-sm text-white/75">Dec 15 - Dec 20</span>
+                    </div>
+                    <span className="text-sm text-white/45">5 days</span>
+                  </div>
+                  <div className="flex items-center justify-between rounded-2xl border border-white/8 bg-black/20 px-4 py-3">
+                    <div className="flex items-center gap-3">
+                      <TrendingUp className="h-4 w-4 text-cyan-300" />
+                      <span className="text-sm text-white/75">Flight + hotel options matched</span>
+                    </div>
+                    <span className="text-sm text-white/45">14 results</span>
+                  </div>
+                </div>
+
+                <div className="mt-5 rounded-2xl border border-white/10 bg-linear-to-br from-indigo-500/20 to-cyan-500/10 p-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-xs uppercase tracking-[0.24em] text-white/45">Agent output</p>
+                      <p className="mt-1 font-medium">Best-value itinerary assembled</p>
+                    </div>
+                    <Star className="h-5 w-5 fill-yellow-300 text-yellow-300" />
+                  </div>
+                  <p className="mt-3 text-sm leading-6 text-white/65">
+                    Flight options, a stay near the beach, and a balanced budget plan are already organized for review.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="features" className="mt-24">
+          <div className="max-w-2xl">
+            <p className="text-sm font-medium uppercase tracking-[0.24em] text-white/45">Features</p>
+            <h2 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">A cleaner way to explore travel plans</h2>
+          </div>
+
+          <div className="mt-8 grid gap-5 md:grid-cols-3">
+            {features.map((feature) => {
+              const Icon = feature.icon;
+              return (
+                <div key={feature.title} className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-lg shadow-black/20 backdrop-blur-sm">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-indigo-400/15 text-indigo-200">
+                    <Icon className="h-5 w-5" />
+                  </div>
+                  <h3 className="mt-5 text-xl font-semibold tracking-tight">{feature.title}</h3>
+                  <p className="mt-3 leading-7 text-white/60">{feature.description}</p>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+
+        <section id="workflow" className="mt-24 grid gap-8 lg:grid-cols-[0.85fr_1.15fr]">
+          <div>
+            <p className="text-sm font-medium uppercase tracking-[0.24em] text-white/45">Workflow</p>
+            <h2 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">Simple for travelers, structured for the agents</h2>
+            <p className="mt-4 max-w-xl text-white/60 leading-7">
+              The interface stays lightweight while the backend keeps the planning pipeline organized. That gives users a quick path from idea to actionable itinerary.
+            </p>
+          </div>
+
+          <div className="grid gap-4">
+            {steps.map((step) => (
+              <div key={step.number} className="flex gap-4 rounded-3xl border border-white/10 bg-white/5 p-5 backdrop-blur-sm">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-black/20 text-sm font-semibold text-indigo-200">
+                  {step.number}
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold tracking-tight">{step.title}</h3>
+                  <p className="mt-2 leading-7 text-white/60">{step.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section id="api" className="mt-24 rounded-[2rem] border border-white/10 bg-linear-to-r from-white/6 via-white/5 to-indigo-500/10 p-8 shadow-2xl shadow-black/20 backdrop-blur-xl">
+          <div className="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
+            <div>
+              <p className="text-sm font-medium uppercase tracking-[0.24em] text-white/45">API</p>
+              <h2 className="mt-3 text-3xl font-semibold tracking-tight">A backend that reads like a product, not a stub</h2>
+              <p className="mt-4 max-w-2xl leading-7 text-white/60">
+                The service now exposes a clearer status and version surface, which makes local development and future integrations easier to reason about.
+              </p>
+            </div>
+
+            <div className="grid gap-3 rounded-3xl border border-white/10 bg-black/25 p-5 text-sm text-white/70">
+              <div className="flex items-center gap-2">
+                <BadgeCheck className="h-4 w-4 text-emerald-300" />
+                <span>/health</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <BadgeCheck className="h-4 w-4 text-emerald-300" />
+                <span>/api/v1</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <BadgeCheck className="h-4 w-4 text-emerald-300" />
+                <span>/api/v1/status</span>
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
     </div>
   )

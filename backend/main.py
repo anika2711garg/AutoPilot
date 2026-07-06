@@ -1,17 +1,17 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from app.core.config import settings
 from app.api.api import api_router
 
 app = FastAPI(
-    title="Autopilot API",
+    title=settings.PROJECT_NAME,
     description="Backend API for the Autopilot AI Travel SaaS application",
     version="1.0.0"
 )
 
-# CORS configuration
 origins = [
     "http://localhost:3000",
-    # Add production URL later
+    "http://127.0.0.1:3000",
 ]
 
 app.add_middleware(
@@ -26,8 +26,23 @@ app.include_router(api_router, prefix="/api/v1")
 
 @app.get("/")
 async def root():
-    return {"message": "Welcome to Autopilot API"}
+    return {
+        "service": settings.PROJECT_NAME,
+        "status": "ready",
+        "version": "1.0.0",
+        "docs": "/docs",
+        "health": "/health",
+    }
 
 @app.get("/health")
 async def health_check():
-    return {"status": "ok"}
+    return {
+        "service": settings.PROJECT_NAME,
+        "status": "ok",
+        "version": "1.0.0",
+        "routes": {
+            "api": "/api/v1",
+            "docs": "/docs",
+            "openapi": "/openapi.json",
+        },
+    }
