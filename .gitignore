@@ -1,0 +1,26 @@
+# Node
+node_modules/
+.next/
+out/
+build/
+.npm/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+env/
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Docker
+.dockerignore
+
+# OS Files
+.DS_Store
+Thumbs.db
