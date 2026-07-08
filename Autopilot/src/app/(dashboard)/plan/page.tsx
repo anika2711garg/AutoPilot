@@ -63,7 +63,7 @@ export default function PlanPage() {
   }
 
   return (
-    <div className="flex flex-col h-full max-w-4xl mx-auto w-full pt-8 px-4">
+    <div className="flex flex-col min-h-full max-w-4xl mx-auto w-full pt-8 pb-16 px-4 space-y-6">
       <div className="mb-6 rounded-[1.75rem] border border-white/10 bg-white/5 p-5 shadow-2xl shadow-black/10 backdrop-blur-xl">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div>
@@ -146,7 +146,7 @@ export default function PlanPage() {
       </div>
 
       {/* Chat Messages */}
-      <div className="flex-1 overflow-y-auto space-y-6 pb-20 scrollbar-none">
+      <div className="space-y-4">
         {messages.map((msg, idx) => (
           <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
             <div className={`max-w-[85%] rounded-2xl px-5 py-3.5 ${
@@ -218,7 +218,7 @@ export default function PlanPage() {
       )}
 
       {/* Input Area */}
-      <div className="sticky bottom-6 left-0 right-0 bg-background/80 backdrop-blur-xl pb-6 pt-2">
+      <div className="pt-4 border-t border-white/5">
         <form onSubmit={handleSubmit} className="relative">
           <input
             type="text"
