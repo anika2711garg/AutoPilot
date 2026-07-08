@@ -3,7 +3,7 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import { ArrowRight, Lightbulb, Send, Sparkles, Map, Calendar, Wallet } from "lucide-react"
-import { createTrip, getApiBaseUrl, getTripSummary, getTrips, type Trip, type TripSummary } from "@/lib/api"
+import { createTrip, getTripSummary, getTrips, type Trip, type TripSummary } from "@/lib/api"
 
 type Message = {
   role: "assistant" | "user"
@@ -62,8 +62,6 @@ export default function PlanPage() {
     }
   }
 
-  const connectedBackend = getApiBaseUrl()
-
   return (
     <div className="flex flex-col h-full max-w-4xl mx-auto w-full pt-8 px-4">
       <div className="mb-6 rounded-[1.75rem] border border-white/10 bg-white/5 p-5 shadow-2xl shadow-black/10 backdrop-blur-xl">
@@ -74,9 +72,6 @@ export default function PlanPage() {
             <p className="mt-2 max-w-2xl text-sm leading-7 text-white/60">
               Enter your destination, dates, and budget. The supervisor agent will orchestrate specialist nodes in parallel to assemble your itinerary.
             </p>
-          </div>
-          <div className="inline-flex items-center rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-2 text-sm text-emerald-200">
-            Connected to {connectedBackend}
           </div>
         </div>
 
