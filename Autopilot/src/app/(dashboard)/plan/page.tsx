@@ -70,9 +70,9 @@ export default function PlanPage() {
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div>
             <p className="text-xs uppercase tracking-[0.24em] text-white/45">Planner workspace</p>
-            <h1 className="mt-2 text-2xl font-semibold tracking-tight text-white">Draft trips with backend-backed mock data</h1>
+            <h1 className="mt-2 text-2xl font-semibold tracking-tight text-white">Autonomous Agent Workspace</h1>
             <p className="mt-2 max-w-2xl text-sm leading-7 text-white/60">
-              Use this workspace to shape trips now. The live data layer can be added later without changing the core planning flow.
+              Enter your destination, dates, and budget. The supervisor agent will orchestrate specialist nodes in parallel to assemble your itinerary.
             </p>
           </div>
           <div className="inline-flex items-center rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-2 text-sm text-emerald-200">
@@ -82,15 +82,15 @@ export default function PlanPage() {
 
         <div className="mt-5 grid gap-3 sm:grid-cols-3">
           <div className="rounded-2xl border border-white/10 bg-black/20 px-4 py-3">
-            <p className="text-xs uppercase tracking-[0.2em] text-white/40">Trips synced</p>
+            <p className="text-xs uppercase tracking-[0.2em] text-white/40">Trips Synced</p>
             <p className="mt-2 text-2xl font-semibold">{isLoadingTrips ? "..." : trips.length}</p>
           </div>
           <div className="rounded-2xl border border-white/10 bg-black/20 px-4 py-3">
-            <p className="text-xs uppercase tracking-[0.2em] text-white/40">Mock mode</p>
+            <p className="text-xs uppercase tracking-[0.2em] text-white/40">Agent pipeline</p>
             <p className="mt-2 text-2xl font-semibold">Active</p>
           </div>
           <div className="rounded-2xl border border-white/10 bg-black/20 px-4 py-3">
-            <p className="text-xs uppercase tracking-[0.2em] text-white/40">Planner state</p>
+            <p className="text-xs uppercase tracking-[0.2em] text-white/40">Planner State</p>
             <p className="mt-2 text-2xl font-semibold">{isSubmitting ? "Thinking" : "Ready"}</p>
           </div>
         </div>

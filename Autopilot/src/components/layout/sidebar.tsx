@@ -1,7 +1,8 @@
 import Link from "next/link"
-import { Compass, Settings, Bell, Plane, Bookmark, User } from "lucide-react"
+import { Compass, Settings, Bell, Plane, Bookmark, User, Sparkles } from "lucide-react"
 
 const navItems = [
+  { icon: Sparkles, label: "Planner", href: "/plan" },
   { icon: Plane, label: "Trips", href: "/trips" },
   { icon: Compass, label: "Explore", href: "/explore" },
   { icon: Bookmark, label: "Saved Plans", href: "/saved" },
