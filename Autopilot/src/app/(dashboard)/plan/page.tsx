@@ -25,8 +25,6 @@ export default function PlanPage() {
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    setIsLoadingTrips(true)
-    setIsLoadingSummary(true)
     getTrips()
       .then(setTrips)
       .catch(() => setError("Could not load trips from the backend right now."))

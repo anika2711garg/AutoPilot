@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, BadgeCheck, CalendarDays, Globe, Landmark, ShieldCheck, Sparkles, Star, TrendingUp, Users } from "lucide-react";
+import { ArrowRight, BadgeCheck, CalendarDays, Globe, Landmark, ShieldCheck, Sparkles, Star, TrendingUp } from "lucide-react";
 
 const stats = [
   { value: "24h", label: "Average itinerary turnaround" },
