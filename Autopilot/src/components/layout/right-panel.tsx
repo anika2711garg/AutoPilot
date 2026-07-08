@@ -1,7 +1,19 @@
 "use client"
-import { Loader2, CheckCircle2, Circle, Check } from "lucide-react"
+import { Loader2, CheckCircle2, Circle, Check, Sparkles } from "lucide-react"
 import { useEffect, useRef } from "react"
 import { useTravelStore } from "@/lib/store"
+
+const steps = [
+  { id: "Requirements Agent", label: "Requirements Intake" },
+  { id: "Budget Agent", label: "Budget Constraints" },
+  { id: "Transport Agent", label: "Transit Scout" },
+  { id: "Accommodation Agent", label: "Stays Shortlist" },
+  { id: "Itinerary Agent", label: "Itinerary Sequencer" },
+  { id: "Local Info Agent", label: "Regional Info" },
+  { id: "Packing Agent", label: "Packing Checklist" },
+  { id: "Supervisor", label: "Supervisor Assembly" },
+  { id: "Booking Executor", label: "Booking Saga Executor" }
+]
 
 export function RightPanel() {
   const { activeTrip, logs, activeAgent, isPlanning, isBooking } = useTravelStore()
@@ -13,32 +25,39 @@ export function RightPanel() {
     }
   }, [logs])
 
-  // If no active trip is selected, show a beautiful placeholder
+  // If no active trip is selected, show a beautiful standby registry status dashboard
   if (!activeTrip) {
     return (
-      <aside className="w-80 border-l border-border/50 bg-[#050816]/30 backdrop-blur-xl flex flex-col hidden lg:flex">
-        <div className="h-16 flex items-center px-6 border-b border-border/50">
-          <h2 className="font-semibold text-xs uppercase tracking-wider text-muted-foreground">Agent Activity</h2>
+      <aside className="w-80 border-l border-white/5 bg-slate-950/20 backdrop-blur-xl flex flex-col h-full overflow-hidden no-print">
+        <div className="h-16 flex items-center px-6 border-b border-white/5 justify-between shrink-0">
+          <h2 className="font-bold text-xs uppercase tracking-wider text-muted-foreground">Agent Registry</h2>
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-400/25 bg-emerald-500/10 px-2 py-0.5 text-[9px] font-bold text-emerald-400">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" /> Standby
+          </span>
         </div>
-        <div className="flex-1 flex flex-col items-center justify-center p-6 text-center space-y-2">
-          <Circle className="w-8 h-8 text-muted-foreground/30 animate-pulse" />
-          <p className="text-xs text-muted-foreground font-medium">Select or create a trip to activate the multi-agent console.</p>
+        
+        <div className="p-5 border-b border-white/5 bg-white/2 space-y-2.5 shrink-0">
+          <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider">Active System Nodes</p>
+          <div className="space-y-1.5">
+            {steps.map(step => (
+              <div key={step.id} className="flex items-center justify-between text-[11px] text-white/50">
+                <span className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-white/10" /> {step.label}
+                </span>
+                <span className="text-[8px] font-mono uppercase tracking-wider text-white/30">Ready</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="flex-1 p-6 flex flex-col items-center justify-center text-center space-y-3">
+          <Sparkles className="w-6 h-6 text-indigo-400/40 animate-pulse" />
+          <p className="text-xs text-white/60 font-bold leading-normal">Orchestrator Standby</p>
+          <p className="text-[10px] text-muted-foreground leading-normal max-w-[180px]">Spawn a planning workflow by submitting requirements in the workspace.</p>
         </div>
       </aside>
     )
   }
-
-  const steps = [
-    { id: "Requirements Agent", label: "Requirements Intake" },
-    { id: "Budget Agent", label: "Budget Constraints" },
-    { id: "Transport Agent", label: "Transit Scout" },
-    { id: "Accommodation Agent", label: "Stays Shortlist" },
-    { id: "Itinerary Agent", label: "Itinerary Sequencer" },
-    { id: "Local Info Agent", label: "Regional Info" },
-    { id: "Packing Agent", label: "Packing Checklist" },
-    { id: "Supervisor", label: "Supervisor Assembly" },
-    { id: "Booking Executor", label: "Booking Saga Executor" }
-  ]
 
   return (
     <aside className="w-80 border-l border-border/50 bg-[#050816]/40 backdrop-blur-xl flex flex-col hidden lg:flex no-print">

@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import { ArrowRight, Lightbulb, Send, Sparkles, Map, Calendar, Wallet } from "lucide-react"
 import { createTrip, getTripSummary, getTrips, type Trip, type TripSummary } from "@/lib/api"
+import { useTravelStore } from "@/lib/store"
 
 type Message = {
   role: "assistant" | "user"
@@ -12,6 +13,7 @@ type Message = {
 
 export default function PlanPage() {
   const router = useRouter()
+  const loadTrip = useTravelStore((state) => state.loadTrip)
   const [messages, setMessages] = useState<Message[]>([
     {
       role: "assistant",
@@ -50,6 +52,8 @@ export default function PlanPage() {
 
     try {
       const result = await createTrip(prompt)
+      // Populate store immediately to wake up the global Agent Activity panel instantly
+      loadTrip(String(result.trip.id))
       // Redirect immediately to see it plan in real-time
       router.push(`/trips/${result.trip.id}`)
     } catch {
