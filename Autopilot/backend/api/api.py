@@ -1,6 +1,6 @@
 from fastapi import APIRouter
-from app.core.config import settings
-from app.api.endpoints import users, trips, agents
+from backend.core.config import settings
+from backend.api.endpoints import users, trips, agents
 
 api_router = APIRouter()
 

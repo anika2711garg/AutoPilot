@@ -1,7 +1,7 @@
 from sqlalchemy import Column, String, Integer, ForeignKey, JSON, Enum, DateTime
 from sqlalchemy.orm import relationship
 import enum
-from app.models.base import Base
+from backend.models.base import Base
 
 class TripStatus(str, enum.Enum):
     PLANNING = "planning"

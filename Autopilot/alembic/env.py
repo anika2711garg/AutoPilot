@@ -20,10 +20,10 @@ import sys
 import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from app.models.base import Base
-from app.models.user import User
-from app.models.trip import Trip, TripPlan
-from app.core.config import settings
+from backend.models.base import Base
+from backend.models.user import User
+from backend.models.trip import Trip, TripPlan
+from backend.core.config import settings
 
 target_metadata = Base.metadata
 

@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from app.core.config import settings
-from app.api.endpoints.trips import MOCK_TRIPS, TripCreateRequest, TripResponse, TripSummary
+from backend.core.config import settings
+from backend.api.endpoints.trips import MOCK_TRIPS, TripCreateRequest, TripResponse, TripSummary
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
