@@ -1,5 +1,6 @@
 "use client"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import { ArrowRight, Lightbulb, Send, Sparkles, Map, Calendar, Wallet } from "lucide-react"
 import { createTrip, getApiBaseUrl, getTripSummary, getTrips, type Trip, type TripSummary } from "@/lib/api"
@@ -10,6 +11,7 @@ type Message = {
 }
 
 export default function PlanPage() {
+  const router = useRouter()
   const [messages, setMessages] = useState<Message[]>([
     {
       role: "assistant",
@@ -48,25 +50,14 @@ export default function PlanPage() {
 
     try {
       const result = await createTrip(prompt)
-      setMessages((currentMessages) => [
-        ...currentMessages,
-        { role: "assistant", content: result.assistant_message },
-      ])
-      setTrips((currentTrips) => [result.trip, ...currentTrips])
-
-      if (result.next_steps.length > 0) {
-        setMessages((currentMessages) => [
-          ...currentMessages,
-          { role: "assistant", content: `Next step: ${result.next_steps[0]}` },
-        ])
-      }
+      // Redirect immediately to see it plan in real-time
+      router.push(`/trips/${result.trip.id}`)
     } catch {
       setMessages((currentMessages) => [
         ...currentMessages,
         { role: "assistant", content: "I could not reach the backend just now. Try again in a moment." },
       ])
-      setError("Backend request failed. Make sure the FastAPI server is running on port 8000.")
-    } finally {
+      setError("Backend request failed. Make sure the FastAPI server is running on port 8001.")
       setIsSubmitting(false)
     }
   }
