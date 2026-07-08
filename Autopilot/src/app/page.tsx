@@ -62,6 +62,7 @@ export default function LandingPage() {
           </Link>
 
           <nav className="hidden items-center gap-8 text-sm text-white/65 md:flex">
+            <Link href="/plan" className="transition hover:text-white">Planner</Link>
             <a href="#features" className="transition hover:text-white">Features</a>
             <a href="#workflow" className="transition hover:text-white">Workflow</a>
           </nav>
