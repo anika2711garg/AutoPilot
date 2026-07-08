@@ -64,7 +64,6 @@ export default function LandingPage() {
           <nav className="hidden items-center gap-8 text-sm text-white/65 md:flex">
             <a href="#features" className="transition hover:text-white">Features</a>
             <a href="#workflow" className="transition hover:text-white">Workflow</a>
-            <a href="#api" className="transition hover:text-white">API</a>
           </nav>
 
           <div className="flex items-center gap-2 sm:gap-3">
