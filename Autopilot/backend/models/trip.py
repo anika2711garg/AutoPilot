@@ -18,6 +18,7 @@ class Trip(Base):
     user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
     
     destination = Column(String, nullable=False)
+    dates = Column(String, nullable=True)
     start_date = Column(DateTime, nullable=True)
     end_date = Column(DateTime, nullable=True)
     budget = Column(Integer, nullable=True)

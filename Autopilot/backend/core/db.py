@@ -35,6 +35,19 @@ async def init_db():
     # Import models here to ensure they are registered on the Base metadata
     from backend.models.user import User
     from backend.models.trip import Trip, TripPlan, Segment, Order, Event
+    from sqlalchemy import select
     
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
+        
+    async with SessionLocal() as db:
+        res = await db.execute(select(User).where(User.id == 1))
+        user = res.scalars().first()
+        if not user:
+            db.add(User(
+                id=1,
+                clerk_id="default_user",
+                email="user@example.com",
+                full_name="User Name"
+            ))
+            await db.commit()
