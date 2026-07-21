@@ -1,0 +1,27 @@
+# Local dev dependencies. Postgres is both the durable store AND the job queue
+# (FOR UPDATE SKIP LOCKED) — no Celery/Redis at this scale.
+#
+#   docker compose -f docker-compose.dev.yml up -d db
+#
+# The network-off sandbox does NOT run here — it's created per-run by the engine
+# via the Docker socket (Phase 0 sandbox module).
+services:
+  db:
+    image: postgres:16
+    container_name: itp_db
+    environment:
+      POSTGRES_USER: issue_to_pr
+      POSTGRES_PASSWORD: issue_to_pr
+      POSTGRES_DB: issue_to_pr
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U issue_to_pr"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  pgdata:

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="0.01">
+  <testcase classname="test_root" name="test_thing" time="0.01">
+    <failure message="boom">E   ValueError: boom</failure>
+  </testcase>
+</testsuite>

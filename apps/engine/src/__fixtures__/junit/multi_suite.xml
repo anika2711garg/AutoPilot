@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+  <testsuite name="a" tests="1" failures="0" errors="0" skipped="0" time="0.01">
+    <testcase classname="pkg.a" name="t1" time="0.01"/>
+  </testsuite>
+  <testsuite name="b" tests="1" failures="1" errors="0" skipped="0" time="0.02">
+    <testcase classname="pkg.b" name="t2" time="0.02">
+      <failure message="nope" type="AssertionError">E   AssertionError</failure>
+    </testcase>
+  </testsuite>
+</testsuites>
