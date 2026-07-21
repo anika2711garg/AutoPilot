@@ -19,7 +19,9 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@issue-to-pr/core": ["../../packages/core/src/index.ts"],
+      "@issue-to-pr/db": ["../../packages/db/src/index.ts"]
     }
   },
   "include": [

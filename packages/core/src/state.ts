@@ -25,24 +25,25 @@ export const runStates = [
   "opening_pr",
   "done",
   "failed",
+  "cancelled",
 ] as const;
 
 export const RunStateSchema = z.enum(runStates);
 export type RunState = z.infer<typeof RunStateSchema>;
 
 /** Terminal states have no outgoing transitions. */
-export const TERMINAL_STATES: ReadonlySet<RunState> = new Set(["done", "failed"]);
+export const TERMINAL_STATES: ReadonlySet<RunState> = new Set(["done", "failed", "cancelled"]);
 
 export function isTerminal(state: RunState): boolean {
   return TERMINAL_STATES.has(state);
 }
 
 /**
- * Happy-path + retry edges. `failed` is intentionally NOT listed here — it is
+ * Happy-path + retry edges. `failed` and `cancelled` are intentionally NOT listed here — they are
  * reachable from every non-terminal state and handled by `canTransition`.
  *
  * Parking edges (into/out of `awaiting_human` for review_repro & clarify_issue)
- * are introduced with the intervention flow in Phase 3; today only the
+ * are introduced with the intervention flow; today only the
  * approve-then-open-PR path enters `awaiting_human`.
  */
 export const TRANSITIONS: Readonly<Record<RunState, readonly RunState[]>> = {
@@ -56,17 +57,18 @@ export const TRANSITIONS: Readonly<Record<RunState, readonly RunState[]>> = {
   opening_pr: ["done"],
   done: [],
   failed: [],
+  cancelled: [],
 };
 
-/** Every state a run may legally move to from `from`, including `failed`. */
+/** Every state a run may legally move to from `from`, including `failed` and `cancelled`. */
 export function nextStates(from: RunState): readonly RunState[] {
   if (isTerminal(from)) return [];
-  return [...TRANSITIONS[from], "failed"];
+  return [...TRANSITIONS[from], "failed", "cancelled"];
 }
 
 export function canTransition(from: RunState, to: RunState): boolean {
   if (isTerminal(from)) return false;
-  if (to === "failed") return true; // universal typed bail-out
+  if (to === "failed" || to === "cancelled") return true; // universal bail-out
   return TRANSITIONS[from].includes(to);
 }
 

@@ -3,9 +3,9 @@ import { describe, expect, it } from "vitest";
 import { FAILURE_DESCRIPTIONS, FailureTypeSchema, failureTypes } from "./taxonomy";
 
 describe("failure taxonomy", () => {
-  it("has exactly 13 distinct categories", () => {
-    expect(failureTypes).toHaveLength(13);
-    expect(new Set(failureTypes).size).toBe(13);
+  it("has exactly 17 distinct categories", () => {
+    expect(failureTypes).toHaveLength(17);
+    expect(new Set(failureTypes).size).toBe(17);
   });
 
   it("parses every valid category and rejects anything else", () => {

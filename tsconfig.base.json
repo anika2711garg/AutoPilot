@@ -20,6 +20,13 @@
     "skipLibCheck": true,
     "declaration": true,
     "declarationMap": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "baseUrl": ".",
+    "paths": {
+      "@issue-to-pr/core": ["./packages/core/src/index.ts"],
+      "@issue-to-pr/db": ["./packages/db/src/index.ts"],
+      "drizzle-orm": ["./node_modules/drizzle-orm"],
+      "drizzle-orm/*": ["./node_modules/drizzle-orm/*"]
+    }
   }
 }

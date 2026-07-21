@@ -8,6 +8,7 @@
     "node": ">=22.13.0 <23 || >=24"
   },
   "scripts": {
+    "dev": "npx pnpm --filter @issue-to-pr/web dev",
     "test": "pnpm -r test",
     "typecheck": "pnpm -r typecheck",
     "lint": "pnpm -r lint",

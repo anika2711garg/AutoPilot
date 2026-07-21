@@ -3,11 +3,15 @@ import { getTableColumns } from "drizzle-orm";
 import { describe, expect, it } from "vitest";
 
 import {
+  approvals,
   attempts,
   confidenceEnum,
+  evaluations,
   events,
   failureTypeEnum,
   interventions,
+  issues,
+  jobs,
   modeEnum,
   prs,
   repos,
@@ -34,8 +38,8 @@ describe("schema ↔ core enum consistency (drift guard)", () => {
 describe("table shape", () => {
   const cols = (t: Parameters<typeof getTableColumns>[0]) => Object.keys(getTableColumns(t));
 
-  it("defines all seven tables", () => {
-    for (const t of [repos, runs, attempts, events, traces, prs, interventions]) {
+  it("defines all core tables", () => {
+    for (const t of [repos, issues, runs, attempts, events, traces, approvals, prs, jobs, evaluations, interventions]) {
       expect(Object.keys(getTableColumns(t)).length).toBeGreaterThan(0);
     }
   });

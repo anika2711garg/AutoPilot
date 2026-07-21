@@ -45,10 +45,11 @@ describe("state machine — structural integrity", () => {
     }
   });
 
-  it("terminal states are exactly done + failed with no exits", () => {
-    expect([...TERMINAL_STATES].sort()).toEqual(["done", "failed"]);
+  it("terminal states are exactly cancelled + done + failed with no exits", () => {
+    expect([...TERMINAL_STATES].sort()).toEqual(["cancelled", "done", "failed"]);
     expect(TRANSITIONS.done).toEqual([]);
     expect(TRANSITIONS.failed).toEqual([]);
+    expect(TRANSITIONS.cancelled).toEqual([]);
   });
 });
 
@@ -91,14 +92,17 @@ describe("canTransition — illegal edges are rejected", () => {
   });
 });
 
-describe("failed is reachable from every non-terminal state", () => {
+describe("failed and cancelled are reachable from every non-terminal state", () => {
   it.each(nonTerminal)("%s → failed", (from) => {
     expect(canTransition(from, "failed")).toBe(true);
+  });
+  it.each(nonTerminal)("%s → cancelled", (from) => {
+    expect(canTransition(from, "cancelled")).toBe(true);
   });
 });
 
 describe("terminal states are dead ends", () => {
-  it.each(["done", "failed"] as const)("%s cannot transition anywhere", (from) => {
+  it.each(["done", "failed", "cancelled"] as const)("%s cannot transition anywhere", (from) => {
     for (const to of runStates) {
       expect(canTransition(from, to)).toBe(false);
     }
@@ -108,9 +112,9 @@ describe("terminal states are dead ends", () => {
 });
 
 describe("nextStates", () => {
-  it("returns the happy-path targets plus failed for non-terminal states", () => {
-    expect(nextStates("verifying")).toEqual(["patching", "awaiting_human", "failed"]);
-    expect(nextStates("created")).toEqual(["ingesting", "failed"]);
+  it("returns the happy-path targets plus failed and cancelled for non-terminal states", () => {
+    expect(nextStates("verifying")).toEqual(["patching", "awaiting_human", "failed", "cancelled"]);
+    expect(nextStates("created")).toEqual(["ingesting", "failed", "cancelled"]);
   });
 });
 

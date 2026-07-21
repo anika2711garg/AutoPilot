@@ -18,6 +18,10 @@ export const failureTypes = [
   "injection_suspected",
   "rejected_by_human",
   "infra_error",
+  "invalid_repository",
+  "unsupported_repository",
+  "sandbox_timeout",
+  "cancelled",
 ] as const;
 
 export const FailureTypeSchema = z.enum(failureTypes);
@@ -38,4 +42,8 @@ export const FAILURE_DESCRIPTIONS: Readonly<Record<FailureType, string>> = {
   injection_suspected: "Issue text tripped the prompt-injection screen.",
   rejected_by_human: "A human declined the change at the approval gate.",
   infra_error: "Infrastructure fault (sandbox, DB, API) — not the agent's judgement.",
+  invalid_repository: "The repository URL, clone target, or structure is invalid.",
+  unsupported_repository: "The repository build recipe, language, or framework is unsupported.",
+  sandbox_timeout: "Execution in the sandbox exceeded wall-clock limits.",
+  cancelled: "Run was cancelled by a user request.",
 };
