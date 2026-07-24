@@ -48,6 +48,9 @@ const FORBIDDEN_ENV = [
   "DATABASE_URL_POOLED",
 ];
 
+/** Cached base template (python:3.11 + pytest), built via scripts/build-template.ts. */
+export const PYTEST_TEMPLATE = "issue-to-pr-pytest";
+
 const DEFAULT_WORKDIR = "/home/user/work";
 const JUNIT_FILENAME = ".junit.xml";
 /** Conventional exit code for a process killed by timeout. */
@@ -123,7 +126,9 @@ export class E2BSandbox {
       const report = await this.tryReadJUnit(sandbox, junitPath);
       return { exitCode, stdout, stderr, durationMs: Date.now() - started, timedOut, report };
     } finally {
-      await sandbox.kill();
+      // Best-effort teardown — a transient error here must not crash the run;
+      // the sandbox also auto-expires via its own timeoutMs.
+      await sandbox.kill().catch(() => undefined);
     }
   }
 
