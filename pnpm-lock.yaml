@@ -51,18 +51,6 @@ importers:
 
   apps/web:
     dependencies:
-      '@issue-to-pr/core':
-        specifier: workspace:*
-        version: link:../../packages/core
-      '@issue-to-pr/db':
-        specifier: workspace:*
-        version: link:../../packages/db
-      drizzle-orm:
-        specifier: ^0.38.3
-        version: 0.38.4(@types/react@19.2.17)(postgres@3.4.9)(react@19.2.4)
-      fast-xml-parser:
-        specifier: ^4.5.1
-        version: 4.5.7
       lucide-react:
         specifier: ^0.475.0
         version: 0.475.0(react@19.2.4)
@@ -75,9 +63,6 @@ importers:
       react-dom:
         specifier: 19.2.4
         version: 19.2.4(react@19.2.4)
-      zod:
-        specifier: ^3.24.1
-        version: 3.25.76
     devDependencies:
       '@tailwindcss/postcss':
         specifier: ^4
