@@ -20,19 +20,26 @@ ISSUE → LOCALIZE → REPRODUCE → PATCH → VERIFY → APPROVE → PR
 4. **Every external write is idempotent** — an idempotency-key row goes in before the API call.
 5. **Failures are typed, never free text** — every dead run lands in one taxonomy category.
 
-## Monorepo layout (pnpm workspaces)
+## Layout (single Next.js app)
 
 ```
-apps/
-  web/      # Next.js dashboard (App Router) — deferred until the backend is solid
-  engine/   # Node worker loop, stages, sandbox, Hono server (SSE + MCP)
-packages/
-  core/     # Zod contracts, state enum, failure taxonomy, budget logic — shared types
-  db/       # Drizzle schema + migrations + query helpers
-images/     # Dockerfiles for pre-baked repo images
+src/app/        # Next.js App Router — the ONLY routing surface (UI + API routes)
+libs/           # the agent + shared code (framework-free; never imports React/Next)
+  core/         #   state machine · failure taxonomy · confidence · budget · schemas
+  db/           #   Drizzle schema + client + migrations
+  orchestrator/ #   state-machine driver + job loop
+  services/     #   ingest · localize · reproduce · patch · verify · approvals · PRs
+  integrations/ #   github · llm · e2b sandbox
+  mcp/ security/ api/
+util/           # small helpers (junit parser, config loader)
+scripts/        # long-running agent worker (plain node/tsx, not a route)
+tests/          # cross-cutting engine tests
 ```
 
-Strict TypeScript everywhere (`tsconfig.base.json`). Vitest per package. pnpm 10 / Node 22 LTS.
+One package, one `node_modules`. Import aliases: `@libs/*`, `@util/*`, `@/*` (→ `src`).
+An ESLint rule keeps `libs/` + `util/` framework-free so the engine stays portable.
+TypeScript strict. Vitest. pnpm 10 / Node 22 LTS. The heavy agent loop runs as a
+**worker** (`pnpm worker`), because a Next route would time out.
 
 ## Build status
 
@@ -50,8 +57,11 @@ Following a phased plan — do not start phase N+1 until phase N's exit criteria
 
 ```bash
 pnpm install
-pnpm test                   # runs every package's Vitest suite
-pnpm typecheck
+pnpm test          # Vitest across libs/ util/ tests/
+pnpm typecheck     # tsc --noEmit
+pnpm dev           # Next.js dashboard on :3000
+pnpm worker        # the agent worker (Phase 1)
 ```
 
-Docker (Docker Desktop or colima) is required from the sandbox module onward.
+Sandbox execution runs on **E2B** (cloud, network-off) and the database on **Neon**
+(Postgres) — no local Docker required. Fill `.env` from `.env.example`.
